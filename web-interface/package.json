@@ -1,0 +1,43 @@
+{
+  "name": "streaming-web-interface",
+  "version": "1.0.0",
+  "description": "Web interface for iPhone 15 Pro Max streaming solution",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2",
+    "flv.js": "^1.6.2",
+    "hls.js": "^1.4.10",
+    "axios": "^1.4.0",
+    "zustand": "^4.4.1",
+    "clsx": "^2.0.0",
+    "lucide-react": "^0.263.1",
+    "date-fns": "^2.30.0",
+    "react-hot-toast": "^2.4.1",
+    "qrcode": "^1.5.3",
+    "js-cookie": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
