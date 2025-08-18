@@ -3,7 +3,7 @@
 Полное решение для потокового видео с iPhone на сервер и мониторинга через веб-интерфейс.
 
 ## 🏗️ Архитектура
-
+![Диаграма архитектуры подробно](docs/diagram.png)
 ```
 iPhone 15 Pro Max → RTMP → SRS Server → HTTP-FLV/DVR → Web Interface
                               ↓
@@ -188,3 +188,4 @@ npm run build
 ## 📄 Лицензия
 
 MIT License - см. файл LICENSE для деталей.
+
