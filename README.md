@@ -45,7 +45,7 @@ iPhone 15 Pro Max → RTMP → SRS Server → HTTP-FLV/DVR → Web Interface
 
 ```bash
 # Клонируем проект
-git clone [<repository-url>](https://github.com/gr33njj/iOS-Streaming-Solution-App-RTMP-nginx-Web-Interface-.git)
+git clone https://github.com/gr33njj/iOS-Streaming-Solution-App-RTMP-nginx-Web-Interface-.git
 cd streaming-solution/server
 
 # Настраиваем переменные окружения
@@ -188,5 +188,6 @@ npm run build
 ## 📄 Лицензия
 
 MIT License - см. файл LICENSE для деталей.
+
 
 
