@@ -1,0 +1,14 @@
+{
+  "admin": {
+    "id": "user-001",
+    "username": "admin",
+    "email": "admin@streaming.local",
+    "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/7h8UOj3TS",
+    "role": "admin",
+    "totpEnabled": false,
+    "totpSecret": "",
+    "created": "2025-08-18T10:00:00.000Z",
+    "lastLogin": null,
+    "active": true
+  }
+}
