@@ -1,0 +1,11 @@
+﻿iOS Streaming Solution (App + RTMP nginx + Web Interface)
+├───ios-app
+│   ├───StreamingApp
+│   └───StreamingApp.xcodeproj
+├───server
+│   ├───auth-service
+│   └───dvr-cleaner
+└───web-interface
+    └───src
+        ├───components
+        └───contexts
