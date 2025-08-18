@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  srs:
+    image: ossrs/srs:5
+    container_name: streaming_srs
+    ports:
+      - "1935:1935"     # RTMP
+      - "8080:8080"     # HTTP API
+      - "8000:8000"     # HTTP-FLV
+    volumes:
+      - ./srs.conf:/usr/local/srs/conf/srs.conf
+      - ./dvr:/usr/local/srs/objs/nginx/html/dvr
+      - ./logs:/usr/local/srs/objs
+    environment:
+      - SRS_LISTEN=1935
+      - SRS_HTTP_API_LISTEN=8080
+      - SRS_HTTP_SERVER_LISTEN=8000
+    restart: unless-stopped
+    networks:
+      - streaming_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: streaming_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+      - ./web:/usr/share/nginx/html
+      - ./dvr:/usr/share/nginx/html/dvr
+      - ./auth:/etc/nginx/auth
+    depends_on:
+      - srs
+      - auth_service
+    restart: unless-stopped
+    networks:
+      - streaming_network
+
+  auth_service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: streaming_auth
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+      - BCRYPT_ROUNDS=12
+      - TOTP_ISSUER=StreamingService
+      - SESSION_SECRET=your-super-secret-session-key-change-this-too
+    volumes:
+      - ./auth-service/users.json:/app/users.json
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - streaming_network
+
+  dvr_cleaner:
+    build:
+      context: ./dvr-cleaner
+      dockerfile: Dockerfile
+    container_name: streaming_dvr_cleaner
+    volumes:
+      - ./dvr:/app/dvr
+      - ./logs:/app/logs
+    environment:
+      - RETENTION_MINUTES=15
+      - CHECK_INTERVAL_SECONDS=30
+    restart: unless-stopped
+    networks:
+      - streaming_network
+
+networks:
+  streaming_network:
+    driver: bridge
+
+volumes:
+  ssl_certs:
+  dvr_storage:

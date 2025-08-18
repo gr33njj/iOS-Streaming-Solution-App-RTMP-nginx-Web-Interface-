@@ -1,0 +1,69 @@
+# Development/Production overrides
+# This file is automatically loaded by docker-compose
+
+version: '3.8'
+
+services:
+  srs:
+    environment:
+      - SRS_VHOST_HTTP_HOOKS_ON_PUBLISH_URL=http://auth_service:3000/api/hooks/publish
+      - SRS_VHOST_HTTP_HOOKS_ON_UNPUBLISH_URL=http://auth_service:3000/api/hooks/unpublish
+      - SRS_VHOST_HTTP_HOOKS_ON_PLAY_URL=http://auth_service:3000/api/hooks/play
+    volumes:
+      - ./ssl:/usr/local/srs/conf/ssl:ro
+
+  nginx:
+    environment:
+      - NGINX_HOST=your-domain.com
+      - NGINX_PORT=443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.streaming.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.streaming.tls=true"
+      - "traefik.http.routers.streaming.tls.certresolver=letsencrypt"
+
+  auth_service:
+    environment:
+      - DEBUG=auth:*
+      - LOG_LEVEL=info
+    volumes:
+      - ./auth-service/config:/app/config:ro
+
+  dvr_cleaner:
+    environment:
+      - DEBUG=dvr:*
+      - LOG_LEVEL=info
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+# Для production можно добавить:
+#  watchtower:
+#    image: containrrr/watchtower
+#    container_name: watchtower
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    command: --interval 30 --cleanup
+#    restart: unless-stopped
+
+#  prometheus:
+#    image: prom/prometheus
+#    container_name: prometheus
+#    ports:
+#      - "9090:9090"
+#    volumes:
+#      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+#    restart: unless-stopped
+
+#  grafana:
+#    image: grafana/grafana
+#    container_name: grafana
+#    ports:
+#      - "3001:3000"
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#    volumes:
+#      - grafana_data:/var/lib/grafana
+#    restart: unless-stopped
